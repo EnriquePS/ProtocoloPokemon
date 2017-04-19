@@ -25,10 +25,10 @@ def createtrivia():
 	ba+= s
 	#todo send the 3 names form the array
 	ba+=bytearray('pokemon1'.ljust(15)[:15])
-	ba+=bytearray('pokemon1'.ljust(15)[:15])
-	ba+=bytearray('pokemon1'.ljust(15)[:15])
+	ba+=bytearray('pokemon2'.ljust(15)[:15])
+	ba+=bytearray('pokemon3'.ljust(15)[:15])
 	#appending immage
-	ba += b
+	#ba += b
 	#return the content of the trivia to send
 	return ba
 
@@ -63,11 +63,15 @@ def comm(connection):
 		   	if byte_array[0] == 10:
 		   		print 'me estan pidiendo la trivia'
 		   		connection.sendall(createtrivia())
+		   		print 'ya le mande la trivia'
+		   		break
 		   	#hay que revisar la respuesta de la trivia
 		   	elif byte_array[0] == 11:
 		   		print 'me esta enviando su respuesta'
 		   		connection.sendall(eval_trivia(byte_array))
+		   		break
 		   	else:
+		   		break
 		   		#todo: return error
 		   		return None
 	            
@@ -93,3 +97,4 @@ while True:
     print  'waiting for a connection'
     connection, client_address = sock.accept()
     comm(connection)
+

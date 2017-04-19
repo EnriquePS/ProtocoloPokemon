@@ -34,7 +34,7 @@ def read_eval(data):
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #sock.settimeout(3)
 # Connect the socket to the port where the server is listening
-server_address = ('localhost', 9999)
+server_address = (sys.argv[1], int(sys.argv[2]))
 print >>sys.stderr, 'connecting to %s port %s' % server_address
 sock.connect(server_address)
 
@@ -89,7 +89,7 @@ try:
             if data[0] == 21:
                 print "antes de read eval "
                 answer = read_eval(data)
-                print 'despues del eval'
+                print 'despues del'
                 break
             else:
                 print 'error de comunicacion'

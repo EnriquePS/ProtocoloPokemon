@@ -1,7 +1,9 @@
 import socket
+import random
 import sys
 import Image
 import struct
+from multiprocessing import Pool
 
 
 
@@ -9,7 +11,14 @@ pokemons = {'pokemon1':1,'pokemon2':2,'pokemon3':3}
 
 #this method generates the trivia to send to the client
 def createtrivia():
-	with open("uno.png", "rb") as imageFile:
+	pok = random.randint(1,3)
+	if pok == 1:
+		im_name = 'uno.png'
+	elif pok == 2:
+		im_name = 'dos.png'
+	else:
+		im_name = 'tres.png'
+	with open(im_name, "rb") as imageFile:
 	  f = imageFile.read()
 	  b = bytearray(f)
 	imagesize= len(b)
@@ -18,7 +27,7 @@ def createtrivia():
 	#el codigo par aindicar que se esta enviando la trivia
 	ba.append(20)
 	#send the code of the pokemon
-	ba.append(1)
+	ba.append(pok)
 	#todo read the file and send the size:
 	p = struct.pack("I", imagesize)
 	s = bytearray(p)
@@ -27,8 +36,8 @@ def createtrivia():
 	ba+=bytearray('pokemon1'.ljust(15)[:15])
 	ba+=bytearray('pokemon2'.ljust(15)[:15])
 	ba+=bytearray('pokemon3'.ljust(15)[:15])
-	#appending immage
-	#ba += b
+	#appending imsmage
+	ba += b
 	#return the content of the trivia to send
 	return ba
 
@@ -46,7 +55,8 @@ def eval_trivia(respuesta):
 #if the code is one of the specified in the projkect the proceed if not then close the connecgtion witht error
 def comm(connection):
     try:
-    	while True:
+    	progress = True
+    	while progress:
 		    print  'connection from'+ str(client_address)
 		    data = '' 
 		    # Receive the data in small chunks and retransmit it
@@ -69,14 +79,17 @@ def comm(connection):
 		   	elif byte_array[0] == 11:
 		   		print 'me esta enviando su respuesta'
 		   		connection.sendall(eval_trivia(byte_array))
+		   		progress = False
+		   		print 'ya le respondi'
 		   		break
 		   	else:
-		   		break
 		   		#todo: return error
-		   		return None
+		   		print 'cerrando conexion'
+        		connection.close()
 	            
     finally:
         # Clean up the connection
+        print 'cerrando conexion'
         connection.close()
 
 

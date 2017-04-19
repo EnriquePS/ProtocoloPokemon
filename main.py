@@ -1,10 +1,17 @@
-from cliente.cliente import socketcliente
+import sys
+import struct
+import Image
+#from cliente.cliente import socketcliente
 
 def main ():
-	cliente = socketcliente()
-	cliente.connect('facebook.com',443)
-	cliente.send('aiura')
 
+
+	#print struct.unpack('I',p)	
+	#print "{:<15}".format('si')+'s'
+	s = bytearray()
+	s.append(10)
+	#s.append(bytearray('megalol'))
+	for c in s: print(c)
 
 if __name__=="__main__":
 	main()

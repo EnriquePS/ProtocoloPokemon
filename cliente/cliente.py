@@ -1,6 +1,9 @@
 import socket
 import sys
 
+
+
+
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -13,19 +16,23 @@ sock.connect(server_address)
 try:
     
     # Send data
-    message = 'This is the message.  It will be repeated.'
-    print  'sending "%s"' % message
-    sock.sendall(message)
+    s = bytearray()
+    #s.append(10)
+    s.append(11)
+    s.append(10)
+    s.append(10)
+    sock.sendall(s)
 
     # Look for the response
     amount_received = 0
-    amount_expected = len(message)
+    amount_expected = len(s)
     
-    while amount_received < amount_expected:
+    while True:
         data = sock.recv(16)
-        amount_received += len(data)
         print  'received "%s"' % data
+        if not data: break
 
 finally:
     print  'closing socket'
     sock.close()
+
